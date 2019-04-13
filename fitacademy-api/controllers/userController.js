@@ -46,10 +46,16 @@ exports.loginUser = async (req, res) => {
 
     req.session.userId = user.id;
 
+    const userBasket = await models.Basket.findOne({
+      where: { userId: user.id },
+      raw: true
+    });
+
     return res.json({
       success: true,
       user: {
-        ..._.omit(user, ['password'])
+        ..._.omit(user, ['password']),
+        basketId: userBasket.id
       }
     });
   } catch (err) {
@@ -69,14 +75,15 @@ exports.currentUser = async (req, res) => {
     }
 
     const userBasket = await models.Basket.findOne({
-      where: { userId: user.id }
+      where: { userId: user.id },
+      raw: true
     });
 
     return res.json({
       success: true,
       user: {
         ..._.omit(user, ['password']),
-        userBasketId: userBasket.id
+        basketId: userBasket.id
       }
     });
   } catch (err) {

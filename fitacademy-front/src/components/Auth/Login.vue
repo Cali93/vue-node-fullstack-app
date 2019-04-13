@@ -59,19 +59,20 @@
     }),
     methods: {
       loginUser: async function (email, password) {
-        const user = await this.$http
-          .post(`http://localhost:5000/user/login`, {
-            email,
-            password
-          }, this.$httpOptions)
-          .then(res => {
-            if (res.data.success){
-              localStorage.setItem('email', res.data.user.email);
-              this.user = res.data.user;
-              this.$router.push('/');
-            }
-          });
-        return user;
+        this.$store.dispatch('login', { email, password }).then(() => this.$router.push('/'))
+        // const user = await this.$http
+        //   .post(`http://localhost:5000/user/login`, {
+        //     email,
+        //     password
+        //   }, this.$httpOptions)
+        //   .then(res => {
+        //     if (res.data.success){
+        //       // localStorage.setItem('email', res.data.user.email);
+        //       // this.user = res.data.user;
+        //       this.$router.push('/');
+        //     }
+        //   });
+        // return user;
       }
     }
   }

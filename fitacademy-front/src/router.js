@@ -4,10 +4,12 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Category from './views/Category';
+import Cart from './views/Cart';
+import store from './store.js';
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   routes: [
     {
       path: '/',
@@ -32,6 +34,30 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       // component: () => import(/* webpackChunkName: "about" */ './views/Products.vue')
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: Cart,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    store.dispatch('getCurrentUser').then(() => {
+      const isLoggedIn = store.getters.isLoggedIn;
+      if (isLoggedIn) {
+        next();
+      }
+      if (!isLoggedIn) {
+        next('/login');
+      }
+    });
+  } else {
+    next();
+  }
 });

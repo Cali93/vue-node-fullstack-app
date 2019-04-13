@@ -8,7 +8,7 @@
       <v-spacer></v-spacer>
     <v-btn outline round color="indigo" to='/'>Home</v-btn>
 
-    <v-btn v-if='isAuthenticated' outline round color="indigo" v-on:click='logoutUser'>Logout</v-btn>
+    <v-btn v-if='isLoggedIn' outline round color="indigo" v-on:click='logoutUser'>Logout</v-btn>
     <v-btn v-else outline round color="indigo" to='/login'>Login</v-btn>
 
     </v-toolbar>
@@ -24,40 +24,23 @@
 export default {
   name: 'App',
   data () {
-    return {
-      isAuthenticated: false,
-      user: {}
+    return {}
+  },
+  created() {
+    this.$store.dispatch('getCurrentUser')
+  },
+  computed: {
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
     }
   },
   methods: {
-    getCurrentUser: async function () {
-      const user = await this.$http
-        .get(`http://localhost:5000/user/current`, this.$httpOptions)
-        .then(res => {
-          if (res.data.success){
-            this.isAuthenticated = true;
-            this.user = res.data.user;
-          }
-        });
-      return user;
-    },
     logoutUser: async function () {
-      const user = await this.$http
-        .get(`http://localhost:5000/user/logout`, this.$httpOptions)
-        .then(res => {
-          if (res.data.success){
-            this.isAuthenticated = false;
-            this.user = {};
-          }
-        });
-      return user;
+      this.$store.dispatch('logout')
+        .then(() => {
+          this.$router.push('/login')
+        })
     }
-  },
-  mounted(){
-    this.getCurrentUser();
-  },
-  updated(){
-    this.getCurrentUser();
   }
 }
 </script>

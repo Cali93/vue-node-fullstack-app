@@ -3,6 +3,6 @@ exports.sessionChecker = (req, res, next) => {
   if (req.session.userId && req.cookies.session_id) {
     next();
   } else {
-    res.status(401).json({ error: 'Unauthorized' });
+    res.json({ success: false, error: 'Unauthorized' });
   }
 };
