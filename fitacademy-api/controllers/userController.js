@@ -49,7 +49,7 @@ exports.loginUser = async (req, res) => {
     return res.json({
       success: true,
       user: {
-        ..._.omit(user.dataValues, ['password'])
+        ..._.omit(user, ['password'])
       }
     });
   } catch (err) {
