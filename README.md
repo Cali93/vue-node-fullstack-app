@@ -4,7 +4,7 @@
 
 - VueJS as a front-end SPA framework
 - Vuetify as a front-end components library using Material Design rules
-- NodeJS and Express To handle our API
+- NodeJS and Express to handle our REST API
 - Sequelize to interact with our relational database (eg: MySQL, or PostgreSQL)
 
 ### Local usage :

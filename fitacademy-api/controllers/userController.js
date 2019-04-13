@@ -14,7 +14,7 @@ exports.createUser = async (req, res) => {
       }, { raw: true }).then(basket => {
         res.json({ success: true,
           user: {
-            // spreading over the user and omitting the password
+            // spread over the user and omit the password
             ..._.omit(user.dataValues, ['password'])
           }
         });
