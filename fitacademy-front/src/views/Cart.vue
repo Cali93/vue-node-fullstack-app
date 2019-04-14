@@ -1,15 +1,17 @@
 <template>
-  <div>
-    Hello from private cart
-  </div>  
+  <Cart />
 </template>
 
 <script>
-export default {
-  
-}
+  import Cart from '../components/Cart/Cart'
+
+  export default {
+    components: {
+      Cart
+    }
+  }
 </script>
 
-<style lang="scss">
-
+<style>
+  
 </style>

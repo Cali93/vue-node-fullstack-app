@@ -17,9 +17,9 @@
       <v-icon v-if="!productAdded" color="indigo">shopping_cart</v-icon>
       <v-icon v-else color="green">add_shopping_cart</v-icon>
     </v-btn>
-    <!-- <v-btn v-else outline ripple large light to="/login">
+    <v-btn v-else outline ripple large light to="/login">
       <v-icon color="indigo">add_shopping_cart</v-icon>
-    </v-btn> -->
+    </v-btn>
   </v-card>
   </div>
 </template>

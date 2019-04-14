@@ -5,8 +5,7 @@ module.exports = (db, DataTypes) => {
 
   Basket.associate = (models) => {
     Basket.belongsToMany(models.Course, {
-      through: 'Basket_Course',
-      as: 'BasketCourse',
+      through: 'BasketCourse',
       foreignKey: { name: 'basketId', field: 'basket_id' }
     });
     Basket.belongsTo(models.User, {

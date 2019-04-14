@@ -15,7 +15,7 @@ router.post('/login', loginUser);
 // @route GET     users/current
 // @description   Return current user
 // @access        Private
-router.get('/current', sessionChecker, currentUser);
+router.get('/current', currentUser);
 
 // @route GET     users/logout
 // @description   Logout user, clear cookie and destroy session

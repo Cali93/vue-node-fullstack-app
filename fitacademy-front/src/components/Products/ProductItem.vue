@@ -4,6 +4,8 @@
       <v-flex xs12 sm12 md8>
         <v-card-title primary-title>
           <div>
+          <img :src="courseImage" />
+            <span>{{ courseImage }}</span>
             <div class="headline">{{ course.name }}</div>
             <span class="subheading">{{ course.programme }}</span>
           </div>
@@ -29,36 +31,16 @@
 </template>
 
 <script>
-  import ProductModal from './ProductModal'
+  import ProductModal from './ProductModal';
   export default {
     components: {
       ProductModal
     },
     props: ['course'],
     data: () => ({
-      productAdded: false,
-      productRemoved: false,
-      dialog: false
-    }),
-    methods: {
-      removeProductFromCart: async function (courseId) {
-        const products = await this.$http
-          .delete(`http://localhost:5000/basket/1/`, {
-            data: {
-              courseId,
-              basketId: 1
-            }
-          }, this.$httpOptions)
-          .then(res => {
-            this.productRemoved = res.data.success;
-          });
-        this.productAdded = false
-        setTimeout(() => {
-          this.productRemoved = false
-        }, 2000)
-        return products
-      }
-    }
+      dialog: false,
+      courseImage: productImage
+    })
   }
 </script>
 
