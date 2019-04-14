@@ -17,8 +17,7 @@
             </v-list-tile-content>
 
             <v-list-tile-action v-on:click="() => removeProductFromCart(course.id)">
-              <v-icon v-if="productRemoved" color="green">delete</v-icon>
-              <v-icon v-else color="red">delete_forever</v-icon>
+              <v-icon color="red">delete_forever</v-icon>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
@@ -43,9 +42,14 @@ export default {
     removeProductFromCart: async function (courseId) {
       const basketId = this.currentUser.basketId;
       const products = await this.$http
-        .delete(`http://localhost:5000/basket/${basketId}`, { data: { courseId, basketId } }, this.$httpOptions)
+        .delete(
+          `http://localhost:5000/basket/${basketId}`,
+          { data: { courseId, basketId } },
+          this.$httpOptions
+        )
         .then(res => {
-          this.productRemoved = res.data.success;
+          const { courseDeleted } = res.data;
+          this.courses = this.courses.filter(course => course.id !== courseId)
         });
       return products
     }

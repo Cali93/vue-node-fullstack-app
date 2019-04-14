@@ -7,6 +7,9 @@ config/db.js
 .env.local
 .env.*.local
 
+# To do file
+todo.md
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

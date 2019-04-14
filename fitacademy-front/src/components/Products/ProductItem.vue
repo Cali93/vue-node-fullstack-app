@@ -4,8 +4,8 @@
       <v-flex xs12 sm12 md8>
         <v-card-title primary-title>
           <div>
-          <img :src="courseImage" />
-            <span>{{ courseImage }}</span>
+          <!-- <img :src="courseImage" /> -->
+            <!-- <span>{{ courseImage }}</span> -->
             <div class="headline">{{ course.name }}</div>
             <span class="subheading">{{ course.programme }}</span>
           </div>
@@ -39,7 +39,7 @@
     props: ['course'],
     data: () => ({
       dialog: false,
-      courseImage: productImage
+      // courseImage: productImage
     })
   }
 </script>
