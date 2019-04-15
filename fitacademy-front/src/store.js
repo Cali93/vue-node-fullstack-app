@@ -14,7 +14,12 @@ const httpOptions = {
 const defaultState = {
   isAuth: false,
   status: '',
-  user: {}
+  user: {},
+  snackbar: {
+    isOpen: false,
+    message: '',
+    status: ''
+  }
 };
 
 export default new Vuex.Store({
@@ -22,7 +27,8 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => state.isAuth,
     authStatus: state => state.status,
-    currentUser: state => state.user
+    currentUser: state => state.user,
+    snackbar: state => state.snackbar
   },
   mutations: {
     auth_request (state) {
@@ -42,6 +48,11 @@ export default new Vuex.Store({
       state.status = '';
       state.isAuth = false;
       state.user = {};
+    },
+    toggle_snackbar (state, { message, status }) {
+      state.snackbar.isOpen = !state.snackbar.isOpen;
+      state.snackbar.message = message;
+      state.snackbar.status = status;
     }
   },
   actions: {
@@ -89,6 +100,10 @@ export default new Vuex.Store({
             commit('auth_error');
           }
         });
+    },
+    toggleSnackbar: ({ commit }, { message, status }) => {
+      const snackbarPayload = { message, status };
+      commit('toggle_snackbar', snackbarPayload);
     }
   }
 });

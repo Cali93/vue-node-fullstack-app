@@ -1,42 +1,32 @@
 <template>
-  <v-card>
     <v-snackbar
-      v-model="snackbar"
-      :color="status"
-      :left="left"
-      :right="right"
-      :value="isOpen"
-      :top="top"
-      :bottom="bottom"
+      v-model="snackbarInfos.isOpen"
+      :bottom="y === 'bottom'"
+      :left="x === 'left'"
       :multi-line="mode === 'multi-line'"
+      :right="x === 'right'"
       :timeout="timeout"
+      :top="y === 'top'"
+      :color="snackbarInfos.status"
       :vertical="mode === 'vertical'"
     >
-      {{ text }}
-      <v-btn
-        dark
-        flat
-        @click="isOpen = false"
-      >
-        Close
-      </v-btn>
+      <h3>{{ snackbarInfos.message }}</h3>
     </v-snackbar>
-  </v-card>
 </template>
 
 <script>
   export default {
-    props: ['isOpen', 'message', 'status'],
-    data: () => ({
-      isOpen: this.isOpen,
-      top: this.top,
-      bottom: this.bottom,
-      left: this.left,
-      right: this.right,
-      color: this.status,
+    computed: {
+      snackbarInfos(){ return this.$store.getters.snackbar }
+    },
+    data () {
+      return {
+      y: 'top',
+      x: 'left',
       mode: 'multi-line',
-      timeout: 6000,
-      text: this.message
-    })
+      timeout: 3000,
+      text: "Product added"
+      }
+    },
   }
 </script>
