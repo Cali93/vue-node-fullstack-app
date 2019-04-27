@@ -1,4 +1,4 @@
-# Fit Academy Web App
+# Dressing Web App
 
 ### A Web App made with: 
 
@@ -10,8 +10,8 @@
 ### Local usage :
 
 ```
-1. cd in fitacademy-api & fitacademy-front and npm install inside both directories
-2. In fitacademy-api/config, create a db.js file as bellow:
+1. cd in dressing-api & dressing-front and npm install inside both directories
+2. In dressing-api/config, create a db.js file as bellow:
   module.exports = {
     dialect: 'mysql',
     database: 'db name',

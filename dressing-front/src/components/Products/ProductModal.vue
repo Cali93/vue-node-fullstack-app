@@ -5,19 +5,26 @@
 
       <v-card-text>{{ course.programme }}</v-card-text>
       <div v-if="isLoggedIn" class="text-xs-center">
-      <v-btn
-        outline
-        round
-        ripple
-        large
-        light
-        color="indigo"
-        v-on:click="() => addProductToCart(course.id)"
-      >
-        <v-icon v-if="!productAdded" color="indigo">shopping_cart</v-icon>
-        <v-icon v-else color="green">add_shopping_cart</v-icon>
-        Add to cart
-      </v-btn>
+        <div v-if="show">
+          <v-overflow-btn
+            :items="dropdown_dressings"
+            color="indigo"
+            label="Add product to cart"
+            @change="selectBasket"
+          ></v-overflow-btn>
+          <v-btn
+            outline
+            round
+            ripple
+            large
+            light
+            color="indigo"
+            v-on:click="() => addProductToCart(course.id, cartId)"
+          >
+            <v-icon v-if="!productAdded" color="indigo">shopping_cart</v-icon>
+            <v-icon v-else color="green">add_shopping_cart</v-icon>Add to cart
+          </v-btn>
+        </div>
       </div>
       <v-btn v-else color="indigo" round outline ripple large light to="/login">
         <v-icon color="indigo">add_shopping_cart</v-icon>
@@ -28,23 +35,39 @@
 
 <script>
 export default {
-  props: ["course"],
-  data: () => ({
-    productAdded: false
-  }),
+  props: ["course", "show"],
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
     currentUser() {
       return this.$store.getters.currentUser;
+    },
+    dressings() {
+      return this.$store.getters.dressings;
     }
   },
+  data() {
+    return {
+      productAdded: false,
+      cartId: null,
+      dropdown_dressings: this.$store.getters.dressings.map(dressing => ({
+        text: `${dressing.name} - REF${dressing.id}`
+      })),
+      selectedBasket: null
+    };
+  },
   methods: {
+    selectBasket: function(val) {
+      function subStrAfterChars(str, char, pos) {
+        if (pos === "REF") {
+          return str.substring(str.indexOf(char) + 1);
+        }
+      }
+      this.selectedBasket = Number(subStrAfterChars(val, 'F', 'REF'));
+    },
     addProductToCart: async function(courseId) {
-      const currentUser = await this.currentUser;
-      const { basketId } = currentUser;
-
+      const basketId = this.selectedBasket;
       const products = await this.$http
         .post(
           `http://localhost:5000/basket/${basketId}`,
@@ -69,12 +92,8 @@ export default {
             this.$store.dispatch("toggleSnackbar", errorSnackbarPayload);
           }
         });
-      setTimeout(() => {
-        this.productAdded = false;
-      }, 4000);
       return products;
     }
   }
 };
 </script>
-

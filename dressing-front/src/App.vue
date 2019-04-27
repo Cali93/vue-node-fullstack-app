@@ -7,9 +7,11 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
     <v-btn outline round color="light" to='/'>Home</v-btn>
-    <v-btn v-if='isLoggedIn' outline round color="light" to='/cart'>Cart</v-btn>
-
-    <v-btn v-if='isLoggedIn' outline round color="light" v-on:click='logoutUser'>Logout</v-btn>
+    <div v-if='isLoggedIn'>
+      <v-btn outline round color="light" to='/cart'>Cart</v-btn>
+      <v-btn outline round color="light" to='/dressings'>Dressings</v-btn>
+      <v-btn outline round color="light" v-on:click='logoutUser'>Logout</v-btn>
+    </div>
     <v-btn v-else outline round color="light" to='/login'>Login</v-btn>
 
     </v-toolbar>
@@ -31,8 +33,9 @@ export default {
   data () {
     return {}
   },
-  created() {
-    this.$store.dispatch('getCurrentUser')
+  async created() {
+    await this.$store.dispatch('getCurrentUser');
+    this.$store.dispatch('getDressings', this.$store.getters.currentUser.id);
   },
   computed: {
     isLoggedIn () {

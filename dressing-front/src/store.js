@@ -19,7 +19,8 @@ const defaultState = {
     isOpen: false,
     message: '',
     status: ''
-  }
+  },
+  dressings: []
 };
 
 export default new Vuex.Store({
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     isLoggedIn: state => state.isAuth,
     authStatus: state => state.status,
     currentUser: state => state.user,
-    snackbar: state => state.snackbar
+    snackbar: state => state.snackbar,
+    dressings: state => state.dressings
   },
   mutations: {
     auth_request (state) {
@@ -53,6 +55,20 @@ export default new Vuex.Store({
       state.snackbar.isOpen = !state.snackbar.isOpen;
       state.snackbar.message = message;
       state.snackbar.status = status;
+    },
+    dressing_request (state) {
+      state.status = 'loading';
+    },
+    dressings_success (state, dressings) {
+      state.dressings = dressings;
+    },
+    add_dressing_success (state, dressing) {
+      state.dressings = [...state.dressings, dressing];
+    },
+    delete_dressing_success (state, dressingId) {
+      state.dressings = state.dressings.filter(
+        dressing => dressing.id !== dressingId
+      );
     }
   },
   actions: {
@@ -101,9 +117,42 @@ export default new Vuex.Store({
           }
         });
     },
+    getDressings: async ({ commit }, userId) => {
+      commit('dressing_request');
+      return axios
+        .get(`http://localhost:5000/basket/user/${userId}`, httpOptions)
+        .then(res => {
+          if (res.data.success) {
+            const dressings = res.data.baskets.map(basket => ({ id: basket.id, name: basket.name }));
+            commit('dressings_success', dressings);
+          }
+        });
+    },
     toggleSnackbar: ({ commit }, { message, status }) => {
       const snackbarPayload = { message, status };
       commit('toggle_snackbar', snackbarPayload);
+    },
+    addDressing: async ({ commit }, { dressingName, userId }) => {
+      commit('dressing_request');
+      return axios
+        .post(`http://localhost:5000/basket/`, { name: dressingName, userId }, httpOptions)
+        .then(res => {
+          if (res.data.success) {
+            const { id, name } = res.data.basket;
+            commit('add_dressing_success', { id, name });
+          }
+        });
+    },
+    deleteDressing: async ({ commit }, dressingId) => {
+      commit('dressing_request');
+      console.log({ dressingId });
+      return axios
+        .delete(`http://localhost:5000/basket`, { data: { basketId: dressingId } }, httpOptions)
+        .then(res => {
+          if (res.data.success) {
+            commit('delete_dressing_success', dressingId);
+          }
+        });
     }
   }
 });

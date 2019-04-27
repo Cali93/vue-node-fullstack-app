@@ -3,7 +3,6 @@ const models = require('../models/index');
 // CREATE BASKET CONTROLLER
 exports.createBasket = (req, res) => {
   const newBasket = req.body;
-
   models.Basket
     .create(newBasket)
     .then(basket => {
@@ -12,6 +11,25 @@ exports.createBasket = (req, res) => {
         basket
       });
     });
+};
+
+// DELETE BASKET CONTROLLER
+exports.deleteBasket = (req, res) => {
+  const { basketId } = req.body;
+  models.BasketCourse.destroy({
+    where: {
+      basketId
+    }
+  }).then(() => models.Basket.destroy({
+    where: {
+      id: basketId
+    }
+  })).then(basket => {
+    res.json({
+      success: true,
+      basketDeleted: basket
+    });
+  });
 };
 
 // ADD PRODUCT TO BASKET CONTROLLER
@@ -67,4 +85,18 @@ exports.getProductsFromBasket = (req, res) => {
     }).then(courses => {
     res.json({ success: true, courses });
   });
+};
+
+// GET BASKETS
+exports.getUserBaskets = (req, res) => {
+  const { userId } = req.params;
+
+  models.Basket.findAll({
+    where: {
+      userId
+    },
+    raw: true
+  }).then(baskets => res.json({
+    success: true, baskets
+  }));
 };

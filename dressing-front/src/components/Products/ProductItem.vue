@@ -18,7 +18,6 @@
         </div>
       </v-flex>
       <v-flex xs10>
-        <!-- <div class="text-xs-center"> -->
         <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on }">
             <div class="text-xs-right">
@@ -27,9 +26,8 @@
               </v-btn>
             </div>
           </template>
-          <ProductModal v-bind:course="course"/>
+          <ProductModal v-bind:course="course" :show="true"/>
         </v-dialog>
-        <!-- </div> -->
       </v-flex>
     </v-layout>
   </v-card>
