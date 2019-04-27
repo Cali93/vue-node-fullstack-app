@@ -5,7 +5,8 @@ const {
   createBasket,
   addProductToBasket,
   deleteProductFromBasket,
-  getProductsFromBasket
+  getProductsFromBasket,
+  updateBasket
 } = require('../controllers/basketControllers');
 
 // @route POST    /basket
@@ -27,5 +28,10 @@ router.delete('/:basketId', deleteProductFromBasket);
 // @description   Adds a product to the basket
 // @access        Private
 router.get('/:basketId', getProductsFromBasket);
+
+// @route GET    /basket/:basketId
+// @description   Adds a product to the basket
+// @access        Private
+router.patch('/:basketId', updateBasket);
 
 module.exports = router;

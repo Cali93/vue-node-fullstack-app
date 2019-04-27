@@ -91,6 +91,25 @@ exports.currentUser = async (req, res) => {
   }
 };
 
+exports.updateUser = (req, res) => {
+  const { userId, newData } = req.body;
+  models.User.update({
+    ...newData
+  }, {
+    where: {
+      id: userId
+    }
+  }).then(updated =>
+    res.json({
+      success: true,
+      user: {
+        id: userId,
+        ...newData
+      }
+    })
+  );
+};
+
 exports.logoutUser = async (req, res) => {
   req.session.destroy(err => {
     if (err) {

@@ -5,6 +5,7 @@
 
       <v-card-text>{{ course.programme }}</v-card-text>
       <div v-if="isLoggedIn" class="text-xs-center">
+        <div v-if="show">
       <v-btn
         outline
         round
@@ -19,6 +20,7 @@
         Add to cart
       </v-btn>
       </div>
+      </div>
       <v-btn v-else color="indigo" round outline ripple large light to="/login">
         <v-icon color="indigo">add_shopping_cart</v-icon>
       </v-btn>
@@ -28,7 +30,7 @@
 
 <script>
 export default {
-  props: ["course"],
+  props: ["course", "show"],
   data: () => ({
     productAdded: false
   }),
@@ -69,9 +71,6 @@ export default {
             this.$store.dispatch("toggleSnackbar", errorSnackbarPayload);
           }
         });
-      setTimeout(() => {
-        this.productAdded = false;
-      }, 4000);
       return products;
     }
   }

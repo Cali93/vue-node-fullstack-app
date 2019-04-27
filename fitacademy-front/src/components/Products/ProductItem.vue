@@ -7,6 +7,7 @@
               contain
               gradient="to top left, rgba(63, 81, 181, .1), rgba(255, 255, 255,.3)"
               :src="require(`../../assets/products/product-${course.id}.jpg`)"
+              :alt="course.name"
               aspect-ratio="3"
             ></v-img>
           </div>
@@ -27,7 +28,7 @@
               </v-btn>
             </div>
           </template>
-          <ProductModal v-bind:course="course"/>
+          <ProductModal :show="true" v-bind:course="course"/>
         </v-dialog>
         <!-- </div> -->
       </v-flex>

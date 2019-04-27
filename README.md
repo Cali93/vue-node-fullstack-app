@@ -3,14 +3,14 @@
 ### A Web App made with: 
 
 - VueJS as a front-end SPA framework
-- Vuetify as a front-end components library using Material Design rules
+- Vuetify as a front-end components library following the Material Design rules
 - NodeJS and Express to handle our REST API
-- Sequelize to interact with our relational database (eg: MySQL, or PostgreSQL)
+- Sequelize as an ORM to interact with our database (eg: MySQL, or PostgreSQL)
 
 ### Local usage :
 
 ```
-1. cd in fitacademy-api & fitacademy-front and npm install inside both directories
+1. cd in /fitacademy-api and in /fitacademy-front then run "npm install" inside both directories
 2. In fitacademy-api/config, create a db.js file as bellow:
   module.exports = {
     dialect: 'mysql',
@@ -20,6 +20,6 @@
     host: 'db host',
     port: 3306
   };
-4. npm start
+4. run "npm start"
 5. check localhost:5000, your api should be running
 ```

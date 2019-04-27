@@ -5,6 +5,7 @@ import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Category from './views/Category';
 import Cart from './views/Cart';
+import Profile from './views/Profile';
 import store from './store.js';
 
 Vue.use(Router);
@@ -39,6 +40,14 @@ export const router = new Router({
       path: '/cart',
       name: 'cart',
       component: Cart,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
       meta: {
         requiresAuth: true
       }
