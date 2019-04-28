@@ -2,8 +2,10 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+// Initialize Vuex in our app
 Vue.use(Vuex);
 
+// Global http options for our axios requests
 const httpOptions = {
   withCredentials: true,
   headers: {
@@ -11,6 +13,7 @@ const httpOptions = {
   }
 };
 
+// Declaring the default Vuex state
 const defaultState = {
   isAuth: false,
   status: '',
@@ -23,8 +26,11 @@ const defaultState = {
   dressings: []
 };
 
+// Instanciating a Vuex store
 export default new Vuex.Store({
+  // the state is where our data will live
   state: defaultState,
+  // the getters will help us to read the data within the state
   getters: {
     isLoggedIn: state => state.isAuth,
     authStatus: state => state.status,
@@ -32,6 +38,7 @@ export default new Vuex.Store({
     snackbar: state => state.snackbar,
     dressings: state => state.dressings
   },
+  // the mutations will mutate/change the state
   mutations: {
     auth_request (state) {
       state.status = 'loading';
@@ -71,7 +78,11 @@ export default new Vuex.Store({
       );
     }
   },
+  // the actions will perform the business logic and then will ask the mutators to change the data in the state
   actions: {
+    // An action is a function that has 2 params:
+    // - commit is the method that will tell the mutators what to do
+    // - the second param is the payload given in our components when calling this.$store.dispatch('action', payload)
     login: async ({ commit }, { email, password }) => {
       commit('auth_request');
       return axios
@@ -123,7 +134,9 @@ export default new Vuex.Store({
         .get(`http://localhost:5000/basket/user/${userId}`, httpOptions)
         .then(res => {
           if (res.data.success) {
-            const dressings = res.data.baskets.map(basket => ({ id: basket.id, name: basket.name }));
+            const dressings = res.data.baskets.map(
+              basket => ({ id: basket.id, name: basket.name })
+            );
             commit('dressings_success', dressings);
           }
         });
@@ -145,9 +158,12 @@ export default new Vuex.Store({
     },
     deleteDressing: async ({ commit }, dressingId) => {
       commit('dressing_request');
-      console.log({ dressingId });
       return axios
-        .delete(`http://localhost:5000/basket`, { data: { basketId: dressingId } }, httpOptions)
+        .delete(
+          `http://localhost:5000/basket`,
+          { data: { basketId: dressingId } },
+          httpOptions
+        )
         .then(res => {
           if (res.data.success) {
             commit('delete_dressing_success', dressingId);

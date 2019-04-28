@@ -9,6 +9,7 @@ import Dressings from './views/Dressings';
 import Dressing from './views/Dressing';
 import store from './store.js';
 
+// Initialize Vue Router in our app
 Vue.use(Router);
 
 export const router = new Router({
@@ -64,6 +65,9 @@ export const router = new Router({
   ]
 });
 
+// Middleware to check which routes are requiring authentication
+// If a route requires auth and if our user isn't logged in then it will redirect him to /login
+// Otherwise, it will let him access the private route he requested
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     store.dispatch('getCurrentUser').then(() => {

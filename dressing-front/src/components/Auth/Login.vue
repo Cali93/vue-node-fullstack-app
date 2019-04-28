@@ -9,7 +9,6 @@
           <v-form v-model="valid">
             <v-container>
               <v-layout class="authContainer" align-center justify-center>
-                <!-- <v-card class='authCard elevation-12'> -->
                 <v-layout justify-center align-items="center" wrap>
                   <v-flex xs10 class="textFieldGroup">
                     <v-text-field
@@ -64,12 +63,15 @@ export default {
   data: () => ({
     user: {},
     valid: false,
+    // get user's email from LS and set it as the default value
     email: localStorage.getItem("email"),
+    // Email validation rules
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+/.test(v) || "E-mail must be valid"
     ],
     password: "",
+    // Email validation rules
     passwordRules: [
       v => !!v || "Password is required",
       v => v.length >= 6 || "Username must be at least 6 characters",
@@ -78,6 +80,7 @@ export default {
   }),
   methods: {
     loginUser: async function(email, password) {
+      // dispatch the login action to the Vuex store and once it's done, redirect the user to the homepage
       this.$store
         .dispatch("login", { email, password })
         .then(() => this.$router.push("/"));

@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     removeProductFromCart: async function(e, courseId) {
+      // stopPropagation allows us to not open the product modal when clicking on the delete btn
       e.stopPropagation();
       const basketId = this.currentUser.basketId;
       const products = await this.$http
@@ -65,11 +66,13 @@ export default {
         });
       return products;
     },
+    // set the product to show in the modal
     setCourse: function(course) {
       this.course = course;
     }
   },
   mounted() {
+    // Once the component is mounted, fetch user's products
     const userBasketId = this.$store.getters.currentUser.basketId;
     return this.$http
       .get(`http://localhost:5000/basket/${userBasketId}`)
