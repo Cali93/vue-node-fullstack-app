@@ -2,6 +2,7 @@ const models = require('../models/index');
 
 // CREATE BASKET CONTROLLER
 exports.createBasket = (req, res) => {
+  // new basket contains: name, userId
   const newBasket = req.body;
   models.Basket
     .create(newBasket)
@@ -16,10 +17,12 @@ exports.createBasket = (req, res) => {
 // DELETE BASKET CONTROLLER
 exports.deleteBasket = (req, res) => {
   const { basketId } = req.body;
+  // Delete cascade the relations between the dressing and the products first
   models.BasketCourse.destroy({
     where: {
       basketId
     }
+    // then delete the dressing itself
   }).then(() => models.Basket.destroy({
     where: {
       id: basketId

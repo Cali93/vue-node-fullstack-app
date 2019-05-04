@@ -43,19 +43,22 @@ export default {
     currentUser() {
       return this.$store.getters.currentUser;
     },
-    dressings() {
-      return this.$store.getters.dressings;
+    dropdown_dressings(){
+      return this.$store.getters.dressings.map(dressing => ({
+          text: `${dressing.name} - REF${dressing.id}`
+        }));
     }
   },
   data() {
     return {
       productAdded: false,
       cartId: null,
-      dropdown_dressings: this.$store.getters.dressings.map(dressing => ({
-        text: `${dressing.name} - REF${dressing.id}`
-      })),
       selectedBasket: null
     };
+  },
+  created(){
+    const currentUserId = this.$store.getters.currentUser.id;
+    return this.$store.dispatch('getDressings', currentUserId);
   },
   methods: {
     selectBasket: function(val) {

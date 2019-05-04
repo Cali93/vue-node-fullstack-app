@@ -34,9 +34,8 @@ export default {
     return {}
   },
   // components lifecycles: https://alligator.io/vuejs/component-lifecycle/
-  async created() {
-    await this.$store.dispatch('getCurrentUser');
-    this.$store.dispatch('getDressings', this.$store.getters.currentUser.id);
+  created() {
+    return this.$store.dispatch('getCurrentUser');
   },
   computed: {
     isLoggedIn () {

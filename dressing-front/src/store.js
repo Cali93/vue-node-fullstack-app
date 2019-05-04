@@ -138,6 +138,7 @@ export default new Vuex.Store({
               basket => ({ id: basket.id, name: basket.name })
             );
             commit('dressings_success', dressings);
+            return dressings;
           }
         });
     },
