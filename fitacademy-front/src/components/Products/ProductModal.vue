@@ -21,9 +21,12 @@
       </v-btn>
       </div>
       </div>
-      <v-btn v-else color="indigo" round outline ripple large light to="/login">
+      <div v-else class="text-xs-center">
+      <v-btn color="indigo" round outline ripple large light to="/login">
         <v-icon color="indigo">add_shopping_cart</v-icon>
+        Add to cart
       </v-btn>
+      </div>
     </v-card>
   </div>
 </template>
