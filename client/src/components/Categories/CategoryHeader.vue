@@ -10,7 +10,7 @@
               </v-btn>
             </v-flex>
             <v-flex xs7 sm11>
-              <h3 class="headline mb-0">Category {{ $route.params.categoryName }}</h3>
+              <h3 class="headline mb-0">Category: {{ $route.params.categoryName }}</h3>
             </v-flex>
           </v-layout>
         </v-card>

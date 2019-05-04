@@ -24,11 +24,14 @@
             <v-icon v-if="!productAdded" color="indigo">shopping_cart</v-icon>
             <v-icon v-else color="green">add_shopping_cart</v-icon>Add to cart
           </v-btn>
-        </div>
       </div>
-      <v-btn v-else color="indigo" round outline ripple large light to="/login">
+      </div>
+      <div v-else class="text-xs-center">
+      <v-btn color="indigo" round outline ripple large light to="/login">
         <v-icon color="indigo">add_shopping_cart</v-icon>
+        Add to cart
       </v-btn>
+      </div>
     </v-card>
   </div>
 </template>
@@ -36,6 +39,9 @@
 <script>
 export default {
   props: ["course", "show"],
+  data: () => ({
+    productAdded: false
+  }),
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;

@@ -1,4 +1,5 @@
 const models = require('../models/index');
+const { getDateDiff } = require('../utils/helpers/dates');
 
 // CREATE BASKET CONTROLLER
 exports.createBasket = (req, res) => {
@@ -58,19 +59,48 @@ exports.addProductToBasket = async (req, res) => {
 };
 
 // DELETE PRODUCT FROM BASKET CONTROLLER
-exports.deleteProductFromBasket = (req, res) => {
+exports.deleteProductFromBasket = async (req, res) => {
   const { courseId, basketId } = req.body;
 
-  models.BasketCourse.destroy({
+  const course = await models.Course.findOne({
     where: {
-      courseId,
-      basketId
-    }
-  }).then(course => {
-    res.json({
-      success: true,
-      courseDeleted: course
+      id: courseId
+    },
+    raw: true
+  });
+
+  const beginsAt = +new Date(course.date);
+  const currentDate = Date.now();
+
+  const daysBeforeCourseBegins = getDateDiff(beginsAt, currentDate);
+  if (daysBeforeCourseBegins <= 1) {
+    return res.json({
+      success: false,
+      error: 'Sorry you can not unregister from this course anymore'
     });
+  } else {
+    models.BasketCourse.destroy({
+      where: {
+        courseId,
+        basketId
+      }
+    }).then(course => {
+      return res.json({
+        success: true,
+        courseDeleted: course
+      });
+    });
+  }
+};
+
+exports.updateBasket = async (req, res) => {
+  const { name, id } = req.body;
+  models.User.update({
+    name
+  }, {
+    where: {
+      id
+    }
   });
 };
 
@@ -82,7 +112,7 @@ exports.getProductsFromBasket = (req, res) => {
     `SELECT * FROM "BasketCourses"
     INNER JOIN "Courses"
     ON "BasketCourses".course_id = "Courses".id
-    WHERE basket_id = :basket_id `, {
+    WHERE basket_id = :basket_id`, {
       replacements: { basket_id: basketId },
       type: models.db.QueryTypes.SELECT
     }).then(courses => {

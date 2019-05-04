@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, loginUser, logoutUser, currentUser } = require('../controllers/userController');
+const { createUser, loginUser, logoutUser, currentUser, updateUser } = require('../controllers/userController');
 const { sessionChecker } = require('../middlewares/isAuth');
 // @route POST     users/register
 // @description   Register user
@@ -22,9 +22,9 @@ router.get('/current', currentUser);
 // @access        Private
 router.get('/logout', sessionChecker, logoutUser);
 
-// @route GET     users/:userId
-// @description   Test users route
-// @access        Public
-// router.get('/:userId', testUser);
+// @route UPDATE     users/:userId
+// @description   Update username
+// @access        Private
+router.patch('/:userId', sessionChecker, updateUser);
 
 module.exports = router;

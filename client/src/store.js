@@ -43,14 +43,25 @@ export default new Vuex.Store({
     auth_request (state) {
       state.status = 'loading';
     },
+    profile_request (state) {
+      state.status = 'loading';
+    },
     auth_success (state, { isAuth, status, user }) {
       state.status = status;
       state.isAuth = isAuth;
       state.user = user;
     },
+    profile_success (state, { status, user }) {
+      state.status = status;
+      state.user = user;
+    },
     auth_error (state) {
       state.status = 'error';
       state.isAuth = false;
+      state.user = {};
+    },
+    profile_error (state) {
+      state.status = 'error';
       state.user = {};
     },
     logout (state) {
@@ -139,6 +150,26 @@ export default new Vuex.Store({
             );
             commit('dressings_success', dressings);
             return dressings;
+          }
+        });
+    },
+    editProfile: async ({ commit }, { userId, newData }) => {
+      commit('auth_request');
+      return axios
+        .patch(`http://localhost:5000/user/${userId}`, { userId, newData }, httpOptions)
+        .then(res => {
+          if (res.data.success) {
+            const profileResponse = {
+              status: 'success',
+              user: res.data.user
+            };
+            if (newData.email) {
+              localStorage.setItem('email', res.data.user.email);
+            }
+            commit('profile_success', profileResponse);
+          }
+          if (!res.data.success) {
+            commit('auth_error');
           }
         });
     },

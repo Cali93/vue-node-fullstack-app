@@ -7,6 +7,7 @@ import Category from './views/Category';
 import Cart from './views/Cart';
 import Dressings from './views/Dressings';
 import Dressing from './views/Dressing';
+import Profile from './views/Profile';
 import store from './store.js';
 
 // Initialize Vue Router in our app
@@ -58,6 +59,14 @@ export const router = new Router({
       path: '/dressing/:basketId',
       name: 'dressing',
       component: Dressing,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
       meta: {
         requiresAuth: true
       }
