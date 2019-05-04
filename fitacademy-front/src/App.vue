@@ -2,8 +2,8 @@
   <v-app>
     <v-toolbar app dark>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span>FIT ACADEMY:</span>
+        <span class="font-weight-light"> Book your coaching sessions</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
     <v-btn outline round color="light" to='/'>Home</v-btn>
@@ -44,6 +44,11 @@ export default {
     logoutUser: async function () {
       this.$store.dispatch('logout')
         .then(() => {
+          const successSnackbarPayload = {
+            message: 'You have been logged out',
+            status: 'info'
+          };
+          this.$store.dispatch('toggleSnackbar', successSnackbarPayload);
           this.$router.push('/login')
         })
     }

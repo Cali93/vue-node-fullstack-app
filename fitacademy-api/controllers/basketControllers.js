@@ -52,7 +52,7 @@ exports.deleteProductFromBasket = async (req, res) => {
   const currentDate = Date.now();
 
   const daysBeforeCourseBegins = getDateDiff(beginsAt, currentDate);
-  if (daysBeforeCourseBegins < 2) {
+  if (daysBeforeCourseBegins <= 1) {
     return res.json({
       success: false,
       error: 'Sorry you can not unregister from this course anymore'

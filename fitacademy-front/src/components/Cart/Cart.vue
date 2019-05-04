@@ -61,6 +61,17 @@ export default {
             this.courses = this.courses.filter(
               course => course.id !== courseId
             );
+            const successSnackbarPayload = {
+              message: "The product has been deleted from your cart !",
+              status: "success"
+            };
+            this.$store.dispatch("toggleSnackbar", successSnackbarPayload);
+          } else {
+            const errorSnackbarPayload = {
+              message: res.data.error,
+              status: "error"
+            };
+            this.$store.dispatch("toggleSnackbar", errorSnackbarPayload);
           }
         });
       return products;

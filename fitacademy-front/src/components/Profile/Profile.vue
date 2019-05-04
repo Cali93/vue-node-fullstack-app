@@ -19,8 +19,6 @@
 
 <script>
 export default {
-  // components: {
-  // },
   pageTitle: "My Profile",
   data() {
     return {
@@ -46,7 +44,14 @@ export default {
           username: this.form.username
         }
       }
-      this.$store.dispatch('editProfile', profilePayload);
+      const successSnackbarPayload = {
+        message: 'Your informations have been saved',
+        status: 'success'
+      };
+      this.$store.dispatch('editProfile', profilePayload)
+        .then(() => 
+          this.$store.dispatch('toggleSnackbar', successSnackbarPayload)
+        );
     }
   },
   mounted() {}
