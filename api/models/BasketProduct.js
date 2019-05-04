@@ -1,5 +1,6 @@
 module.exports = (db, DataTypes) => {
-  const BasketCourse = db.define('BasketCourse', {
+  const BasketProduct = db.define('BasketProduct', {
+    // Relationship table between basket and product
     basketId: {
       field: 'basket_id',
       type: DataTypes.INTEGER,
@@ -9,15 +10,15 @@ module.exports = (db, DataTypes) => {
         key: 'id'
       }
     },
-    courseId: {
-      field: 'course_id',
+    productId: {
+      field: 'product_id',
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Courses',
+        model: 'Products',
         key: 'id'
       }
     }
   });
-  return BasketCourse;
+  return BasketProduct;
 };

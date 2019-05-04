@@ -23,9 +23,9 @@ const db = new Sequelize(
 // For example, we'll be able to do models.Basket.creat(basket)
 const models = {
   Basket: db.import('./Basket'),
-  BasketCourse: db.import('./BasketCourse'),
+  BasketProduct: db.import('./BasketProduct'),
   User: db.import('./User'),
-  Course: db.import('./Course')
+  Product: db.import('./Product')
 };
 
 // Looping on each models and checking if the model contains a method called assosiate

@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>{{ course.name }}</v-card-title>
+      <v-card-title class="headline grey lighten-2" primary-title>{{ product.name }}</v-card-title>
 
-      <v-card-text>{{ course.programme }}</v-card-text>
+      <v-card-text>{{ product.programme }}</v-card-text>
       <div v-if="isLoggedIn" class="text-xs-center">
         <div v-if="show">
           <v-overflow-btn
@@ -19,7 +19,7 @@
             large
             light
             color="indigo"
-            v-on:click="() => addProductToCart(course.id, cartId)"
+            v-on:click="() => addProductToCart(product.id, cartId)"
           >
             <v-icon v-if="!productAdded" color="indigo">shopping_cart</v-icon>
             <v-icon v-else color="green">add_shopping_cart</v-icon>Add to cart
@@ -38,10 +38,7 @@
 
 <script>
 export default {
-  props: ["course", "show"],
-  data: () => ({
-    productAdded: false
-  }),
+  props: ["product", "show"],
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
@@ -75,13 +72,13 @@ export default {
       }
       this.selectedBasket = Number(subStrAfterChars(val, 'F', 'REF'));
     },
-    addProductToCart: async function(courseId) {
+    addProductToCart: async function(productId) {
       const basketId = this.selectedBasket;
       const products = await this.$http
         .post(
           `http://localhost:5000/basket/${basketId}`,
           {
-            courseId,
+            productId,
             basketId
           },
           this.$httpOptions

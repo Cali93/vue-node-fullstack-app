@@ -1,6 +1,6 @@
 # Dressing Web App
 
-### A Web App made with: 
+### A Web App made with:
 
 - VueJS as a front-end SPA framework
 - Vuetify as a front-end components library following the Material Design rules
@@ -23,3 +23,7 @@
 4. run "npm start"
 5. check localhost:5000, your api should be running
 ```
+
+### Customize your theme:
+In Client/src/plugins, feel free to change the colors.
+Then in your components, i.e. instead of using color='indigo' you cant put color='primary'

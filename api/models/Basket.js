@@ -4,8 +4,8 @@ module.exports = (db, DataTypes) => {
   });
 
   Basket.associate = (models) => {
-    Basket.belongsToMany(models.Course, {
-      through: 'BasketCourse',
+    Basket.belongsToMany(models.Product, {
+      through: 'BasketProduct',
       foreignKey: { name: 'basketId', field: 'basket_id' }
     });
     Basket.belongsTo(models.User, {

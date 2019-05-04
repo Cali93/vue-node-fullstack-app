@@ -22,7 +22,7 @@ router.get('/current', currentUser);
 // @access        Private
 router.get('/logout', sessionChecker, logoutUser);
 
-// @route UPDATE     users/:userId
+// @route UPDATE  users/:userId
 // @description   Update username
 // @access        Private
 router.patch('/:userId', sessionChecker, updateUser);

@@ -14,7 +14,7 @@ async function main () {
   const redis = require('./utils/redis');
   const models = require('./models/index');
   const userRoute = require('./routes/userRoute');
-  const courseRoute = require('./routes/courseRoute');
+  const productRoute = require('./routes/productRoute');
   const basketRoute = require('./routes/basketRoute');
 
   const port = 5000;
@@ -72,7 +72,7 @@ async function main () {
 
   // Defining the routes that will be available in our express app
   app.use('/user', userRoute);
-  app.use('/course', courseRoute);
+  app.use('/product', productRoute);
   app.use('/basket', basketRoute);
 
   // Sends not found if requesting for an unexisting route
@@ -92,7 +92,7 @@ async function main () {
   });
 
   // Sync all the models and make sure that our tables exists
-  await models.db.sync()
+  await models.db.sync({ force: true })
     .then(() => console.log('Connected to MySQL'));
 
   // Lauching the server

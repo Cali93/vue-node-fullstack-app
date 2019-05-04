@@ -1,11 +1,10 @@
 const models = require('../models/index');
-const { getDateDiff } = require('../utils/helpers/dates');
 
 // CREATE BASKET CONTROLLER
-exports.createBasket = (req, res) => {
-  // new basket contains: name, userId
+exports.createBasket = async (req, res) => {
+  // new basket eg: {name: 'my custom dressing', userId: 4}
   const newBasket = req.body;
-  models.Basket
+  return models.Basket
     .create(newBasket)
     .then(basket => {
       res.json({
@@ -16,10 +15,10 @@ exports.createBasket = (req, res) => {
 };
 
 // DELETE BASKET CONTROLLER
-exports.deleteBasket = (req, res) => {
+exports.deleteBasket = async (req, res) => {
   const { basketId } = req.body;
   // Delete cascade the relations between the dressing and the products first
-  models.BasketCourse.destroy({
+  return models.BasketProduct.destroy({
     where: {
       basketId
     }
@@ -38,64 +37,49 @@ exports.deleteBasket = (req, res) => {
 
 // ADD PRODUCT TO BASKET CONTROLLER
 exports.addProductToBasket = async (req, res) => {
-  // eg: { basketId: 1, productId: 8 } -> in data
-  const { courseId, basketId } = req.body;
-  await models.BasketCourse.findAll({
+  // eg: { productId: 8, basketId: 1 }
+  const { productId, basketId } = req.body;
+  return models.BasketProduct.findAll({
     where: {
-      courseId,
+      productId,
       basketId
     },
     raw: true
-  }).then(basketCourses => {
-    if (basketCourses.length > 0) {
+  }).then(basketProducts => {
+    // if the product is already in that basket, don't add it
+    if (basketProducts.length > 0) {
       return res.json({ success: false });
     }
-    return models.BasketCourse
-      .create({ courseId, basketId })
-      .then(basketCourse => {
-        res.json({ success: true, basketCourse });
+
+    // otherwhise create it
+    return models.BasketProduct
+      .create({ productId, basketId })
+      .then(basketProduct => {
+        res.json({ success: true, basketProduct });
       });
   });
 };
 
 // DELETE PRODUCT FROM BASKET CONTROLLER
 exports.deleteProductFromBasket = async (req, res) => {
-  const { courseId, basketId } = req.body;
+  const { productId, basketId } = req.body;
 
-  const course = await models.Course.findOne({
+  return models.BasketProduct.destroy({
     where: {
-      id: courseId
-    },
-    raw: true
-  });
-
-  const beginsAt = +new Date(course.date);
-  const currentDate = Date.now();
-
-  const daysBeforeCourseBegins = getDateDiff(beginsAt, currentDate);
-  if (daysBeforeCourseBegins <= 1) {
+      productId,
+      basketId
+    }
+  }).then(product => {
     return res.json({
-      success: false,
-      error: 'Sorry you can not unregister from this course anymore'
+      success: true,
+      productDeleted: productId
     });
-  } else {
-    models.BasketCourse.destroy({
-      where: {
-        courseId,
-        basketId
-      }
-    }).then(course => {
-      return res.json({
-        success: true,
-        courseDeleted: course
-      });
-    });
-  }
+  });
 };
 
 exports.updateBasket = async (req, res) => {
   const { name, id } = req.body;
-  models.User.update({
+  return models.User.update({
     name
   }, {
     where: {
@@ -105,26 +89,28 @@ exports.updateBasket = async (req, res) => {
 };
 
 // GET PRODUCTS FROM BASKET CONTROLLER
-exports.getProductsFromBasket = (req, res) => {
+exports.getProductsFromBasket = async (req, res) => {
   const { basketId } = req.params;
-
-  models.db.query(
-    `SELECT * FROM "BasketCourses"
-    INNER JOIN "Courses"
-    ON "BasketCourses".course_id = "Courses".id
+  // Sequelize allows us to make plain SQL queries
+  // It can be handy for complex queries
+  // We are making an inner join of products and baskets through the relationship table BasketProducts
+  return models.db.query(
+    `SELECT * FROM "BasketProducts"
+    INNER JOIN "Products"
+    ON "BasketProducts".product_id = "Products".id
     WHERE basket_id = :basket_id`, {
       replacements: { basket_id: basketId },
       type: models.db.QueryTypes.SELECT
-    }).then(courses => {
-    res.json({ success: true, courses });
+    }).then(products => {
+    res.json({ success: true, products });
   });
 };
 
 // GET BASKETS
-exports.getUserBaskets = (req, res) => {
+exports.getUserBaskets = async (req, res) => {
   const { userId } = req.params;
 
-  models.Basket.findAll({
+  return models.Basket.findAll({
     where: {
       userId
     },

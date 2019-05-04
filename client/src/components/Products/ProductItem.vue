@@ -6,16 +6,16 @@
             <v-img
               contain
               gradient="to top left, rgba(63, 81, 181, .1), rgba(255, 255, 255,.3)"
-              :src="require(`../../assets/products/product-${course.id}.jpg`)"
-              :alt="course.name"
+              :src="require(`../../assets/products/product-${product.id}.jpg`)"
+              :alt="product.name"
               aspect-ratio="3"
             ></v-img>
           </div>
       </v-flex>
       <v-flex xs10>
         <div class="productContent">
-          <div class="headline">{{ course.name }}</div>
-          <p class="subheading">{{ course.programme }}</p>
+          <div class="headline">{{ product.name }}</div>
+          <p class="subheading">{{ product.programme }}</p>
         </div>
       </v-flex>
       <v-flex xs10>
@@ -27,7 +27,7 @@
               </v-btn>
             </div>
           </template>
-          <ProductModal v-bind:course="course" :show="true"/>
+          <ProductModal v-bind:product="product" :show="true"/>
         </v-dialog>
       </v-flex>
     </v-layout>
@@ -40,7 +40,7 @@ export default {
   components: {
     ProductModal
   },
-  props: ["course"],
+  props: ["product"],
   data: () => ({
     dialog: false
   })

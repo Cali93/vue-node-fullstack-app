@@ -2,8 +2,8 @@
   <v-app>
     <v-toolbar app dark>
       <v-toolbar-title class="headline text-uppercase">
-        <span>FIT ACADEMY:</span>
-        <span class="font-weight-light"> Book your coaching sessions</span>
+        <span>DRESSINGS:</span>
+        <span class="font-weight-light"> Your e-wardrobes</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
     <v-btn outline round color="light" to='/'>Home</v-btn>

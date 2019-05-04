@@ -95,7 +95,7 @@ export default {
   }),
   methods: {
     registerUser: async function(email, username, password) {
-      const user = await this.$http
+      return this.$http
         .post(
           `http://localhost:5000/user/register`,
           {
@@ -108,7 +108,6 @@ export default {
         .then(() => {
           this.$router.push('/login')
         });
-      return user;
     }
   }
 };
